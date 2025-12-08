@@ -17,6 +17,35 @@
             <img :src="imageUrl" alt="Uploaded image" class="preview-image" />
         </div>
     </div>
+    <div class="model-selector">
+        <p style="margin: 5px;">生成模型:</p>
+        <el-select v-model="selectedModel" placeholder="模型选择" style="width: 300px">
+            <el-option
+            v-for="item in Model_options"
+            :key="item.value"
+            :label="item.label" 
+            :value="item.value"
+            />
+        </el-select>
+    </div>
+    <div class="languege-selector">
+        <p style="margin: 5px;">绘图工具:</p>
+        <el-select v-model="selectedLanguege" placeholder="语言选择" style="width: 300px">
+            <el-option
+            v-for="item in Languege_options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            />
+        </el-select>
+    </div>
+
+    <div style="display: flex;justify-content: center;">
+        <button class="upload-btn" style="width: 100px;">
+            请求代码
+        </button>
+    </div>
+
 </template>
 
 <script>
@@ -24,7 +53,19 @@ export default {
     name: 'Selector',
     data() {
         return {
-            imageUrl: null
+            imageUrl: null,
+            selectedModel: "",
+            selectedLanguege: "",
+            Model_options:[
+                {value:"DeepSeek", label:"DeepSeek"},
+                {value:"ChatGPT", label:"ChatGPT"},
+                // {value:"ChatGPT", label:"ChatGPT"},
+            ],
+            Languege_options:[
+                {value:"D3.js", label:"D3.js"},
+                {value:"eChart", label:"eChart"},
+                {value:"Vega", label:"Vega"},
+            ]
         }
     },
     methods: {
@@ -47,6 +88,7 @@ export default {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .upload-btn {
@@ -80,5 +122,19 @@ export default {
 
 .clear-btn:hover {
     background-color: #f78989;
+}
+
+.model-selector{
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+.languege-selector{
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
 }
 </style>
