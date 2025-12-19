@@ -3,19 +3,22 @@
 </template>
 
 <script>
-import { html_code,css_code,js_code  } from '../common/common';
+import { default_html_code,default_css_code,default_js_code } from '../common/common';
 export default {
   name: "StaticCodePreview",
   props: {
-    html_code: String,
+    Codes: {
+      type: String,
+      required: false,
+      default: ''
+    },
   },
   data() {
     return {
-      htmlCode: html_code(),
-
-      cssCode: css_code(),
-
-      jsCode: js_code(),
+      htmlCode: default_html_code(),
+      cssCode: default_css_code(),
+      jsCode: default_js_code(),
+      input_code:'',
     };
   },
   mounted() {
@@ -40,12 +43,12 @@ ${this.htmlCode}
       this.$refs.preview.srcdoc = this.buildSrcdoc();
     },
     runNewview(){
-        this.$refs.preview.srcdoc = this.html_code;
+      this.$refs.preview.srcdoc = this.input_code;
     }
   },
   watch: {
-    html_code(newCode) {
-      this.htmlCode = newCode;
+    Codes(newCode) {
+      this.input_code=newCode;
       console.log("HTML code updated:", newCode);
       this.runNewview();
     }

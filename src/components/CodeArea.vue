@@ -12,15 +12,28 @@
 <script>
 export default {
     name: 'CodeArea',
+    props:{
+        Codes: {
+            type: String,
+            required: false,
+            default: ''
+        },
+    },
     data() {
         return {
-            code: ''
+            code: this.Codes,
         }
     },
     methods: {
         runCode() {
             // Emit the code to parent component or handle it as needed
             this.$emit('code-run', this.code);
+        }
+    },
+    watch:{
+        Codes(newCode) {
+            this.code = newCode;
+            console.log("CodeArea收到代码：", newCode);
         }
     }
 }

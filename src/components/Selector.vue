@@ -13,13 +13,13 @@
             </button>
         </div>
 
-        <div v-if="imageUrl" class="image-display">
-            <img :src="imageUrl" alt="Uploaded image" class="preview-image" />
+        <div v-if="previewUrl" class="image-display">
+            <img :src="previewUrl" alt="Uploaded image" class="preview-image" />
         </div>
     </div>
     <div class="model-selector">
         <p style="margin: 5px;">生成模型:</p>
-        <el-select v-model="selectedModel" placeholder="模型选择" style="width: 300px">
+        <el-select v-model="selectedModel" placeholder="模型选择" style="width: 240px">
             <el-option
             v-for="item in Model_options"
             :key="item.value"
@@ -30,9 +30,9 @@
     </div>
     <div class="languege-selector">
         <p style="margin: 5px;">绘图工具:</p>
-        <el-select v-model="selectedLanguege" placeholder="语言选择" style="width: 300px">
+        <el-select v-model="selectedLanguage" placeholder="语言选择" style="width: 240px">
             <el-option
-            v-for="item in Languege_options"
+            v-for="item in Language_options"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -41,7 +41,7 @@
     </div>
 
     <div style="display: flex;justify-content: center;">
-        <button class="upload-btn" style="width: 100px;">
+        <button class="upload-btn" style="width: 100px;" @click="request_code()">
             请求代码
         </button>
     </div>
@@ -49,36 +49,63 @@
 </template>
 
 <script>
+import axios from "axios";
+import { ElMessage } from 'element-plus'
 export default {
     name: 'Selector',
     data() {
         return {
-            imageUrl: null,
+            imageFile: null,
+            previewUrl: null,
             selectedModel: "",
-            selectedLanguege: "",
+            selectedLanguage: "",
             Model_options:[
-                {value:"DeepSeek", label:"DeepSeek"},
-                {value:"ChatGPT", label:"ChatGPT"},
-                // {value:"ChatGPT", label:"ChatGPT"},
+                {value:"gemini-2.5-pro", label:"gemini-2.5-pro"},
+                {value:"qwen-vl-plus-latest", label:"qwen-vl-plus-latest"},
+                {value:"gpt-4", label:"gpt-4"},
             ],
-            Languege_options:[
+            Language_options:[
                 {value:"D3.js", label:"D3.js"},
                 {value:"eChart", label:"eChart"},
-                {value:"Vega", label:"Vega"},
             ]
         }
     },
     methods: {
-        handleImageUpload(event) {
-            const file = event.target.files[0]
-            if (file) {
-                const reader = new FileReader()
-                reader.onload = (e) => {
-                    this.imageUrl = e.target.result
-                }
-                reader.readAsDataURL(file)
-            }
+        handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            this.imageFile = file;
+            this.previewUrl = URL.createObjectURL(file);
         },
+        async request_code(){
+            if(!this.selectedModel || !this.selectedLanguage || !this.imageFile){
+                ElMessage({
+                    message: '请选择图片、模型以及绘图工具',
+                    type: 'warning',
+                });
+                return;
+            }
+            const formData = new FormData();
+            formData.append("image", this.imageFile);
+            formData.append("model_name", this.selectedModel);
+            formData.append("language", this.selectedLanguage);
+            try {
+                const res = await axios.post(
+                "http://127.0.0.1:5000/upload",
+                formData,
+                {
+                    headers: {
+                    "Content-Type": "multipart/form-data"
+                    }
+                }
+                );
+                console.log("后端返回：", res.data.result);
+                this.$emit('request-code', res.data.result);
+            } catch (err) {
+                console.error("上传失败：", err);
+            }
+        }
     }
 }
 </script>

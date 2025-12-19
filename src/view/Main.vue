@@ -5,13 +5,13 @@
         </div>
         <div class="main">
             <div class="selector child_block">
-                <Selector />
+                <Selector @request-code="handle_request_code"/>
             </div>
             <div class="display child_block">
-                <ImageDisplayer style="width: 100%;" :html_code="codeToRun"/>
+                <ImageDisplayer style="width: 100%;" :Codes="codeToRun"/>
             </div>
             <div class="code child_block">
-                <CodeArea @code-run="handle_run"/>
+                <CodeArea @code-run="handle_run" :Codes="codeToRun"/>
             </div>
         </div>
     </div>
@@ -21,6 +21,7 @@
 import Selector from '../components/Selector.vue';
 import ImageDisplayer from '../components/ImageDisplayer.vue';
 import CodeArea from '../components/CodeArea.vue';
+import { create_chart_html } from '../common/common';
 
 export default {
     name: 'Main',
@@ -38,6 +39,10 @@ export default {
         handle_run(code) {
             this.codeToRun = code;
             // Handle the code execution logic here
+        },
+        handle_request_code(code) {
+            console.log("handle_request_code收到代码：", code);
+            this.codeToRun = create_chart_html(code.body, code.css, code.script, code.import_script); 
         }
     }
 }

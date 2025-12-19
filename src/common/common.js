@@ -1,4 +1,4 @@
-export function css_code(){
+export function default_css_code(){
     return `
         * {
             margin: 0;
@@ -173,7 +173,7 @@ export function css_code(){
     `
 }
 
-export function html_code(){
+export function default_html_code(){
     return `
     <div class="header">
         <h1 class="title">母亲教育水平与婴儿数量关系</h1>
@@ -201,7 +201,7 @@ export function html_code(){
     `
 }
 
-export function js_code(){
+export function default_js_code(){
     return `
     // 数据定义
         const data = [
@@ -459,4 +459,25 @@ export function js_code(){
             initChart();
         });
     `
+}
+
+export function create_chart_html(html, css, js, import_script){
+    return `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chart Visualization</title>
+        <style>
+            ${css}
+        </style>
+        ${import_script}
+    </head>
+    <body>
+        ${html}
+        <script>
+            ${js}   
+        </script>
+    </body>
+    </html>`
 }
