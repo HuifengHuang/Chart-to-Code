@@ -1,7 +1,7 @@
 <script setup>
 // import CodeMirror from './components/codemirror.vue';
 import Main from './view/Main.vue';
-import test from './view/test.vue';
+// import test from './view/test.vue';
 
 </script>
 

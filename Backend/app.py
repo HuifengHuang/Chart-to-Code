@@ -63,6 +63,7 @@ def upload():
 
     response = request_API(model_name, language, image_to_base64(image))
     res_json = response.json()
+    print(res_json)
     content = res_json["choices"][0]["message"]["content"]
     print(content)
     data = match_code(content)
@@ -73,5 +74,11 @@ def upload():
     })
 
 
+@app.route("/test", methods=["GET"])
+def test():
+    x = 1
+    return {"msg": "ok"}
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
