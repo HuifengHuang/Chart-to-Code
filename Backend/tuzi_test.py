@@ -2,15 +2,16 @@ import os
 import requests
 import json
 import base64
-# API_KEY should be provided via environment variable OPENAI_API_KEY
 OPENAI_API_KEY = ''
 if not OPENAI_API_KEY:
     raise RuntimeError("Please set the OPENAI_API_KEY environment variable before running this script.")
-headers = {
-    "Authorization": f"Bearer {OPENAI_API_KEY}",
-    "Content-Type": "application/json"
-}
 
+url = "https://api.tu-zi.com/v1/chat/completions"
+headers = {
+   'Accept': 'application/json',
+    'Authorization': f"Bearer {OPENAI_API_KEY}",
+   'Content-Type': 'application/json'
+}
 
 def image_to_base64(path):
     with open(path, "rb") as f:
@@ -31,28 +32,19 @@ def request_API(model, language, image):
                         }}
              ]}
         ],
-        'stream': True
+        'stream': False
     }
 
     response = requests.post(
-        'https://api.chsdw.top/v1/chat/completions',
+        url,
         headers=headers,
         data=json.dumps(data),
         stream=True,
-        timeout=300
+        timeout=30
     )
     return response
 
 
 if __name__ == "__main__":
-    resp = request_API("gemini-2.5-pro", "D3.js", image_to_base64('E:/kangziyao/CodingSapce/Chart-to-Code/Backend/barchartimage.png'))
-    for chunk in resp.iter_lines():
-        if chunk:
-            decoded_chunk = chunk.decode('utf-8')
-            if decoded_chunk.startswith('data:'):
-                # Remove the 'data: ' prefix and parse the JSON object
-                try:
-                    parsed_chunk = json.loads(decoded_chunk[5:])
-                    print(parsed_chunk['choices'][0]['delta']['content'], end='')
-                except:
-                    pass
+    resp = request_API("deepseek-v3", "D3.js", image_to_base64('E:/kangziyao/CodingSapce/Chart-to-Code/Backend/barchartimage.png'))
+    print(resp.text)

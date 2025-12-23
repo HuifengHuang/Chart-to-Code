@@ -60,13 +60,13 @@ export default {
             selectedModel: "",
             selectedLanguage: "",
             Model_options:[
-                {value:"gemini-2.5-pro", label:"gemini-2.5-pro"},
-                {value:"qwen-vl-plus-latest", label:"qwen-vl-plus-latest"},
-                {value:"gpt-4", label:"gpt-4"},
+                {value:"deepseek-v3", label:"deepseek-v3"},
+                {value:"gemini-3-flash-preview", label:"gemini-3-flash"},
             ],
             Language_options:[
                 {value:"D3.js", label:"D3.js"},
                 {value:"eChart", label:"eChart"},
+                {value:"Vega", label:"Vega"}
             ]
         }
     },
@@ -92,7 +92,7 @@ export default {
             formData.append("language", this.selectedLanguage);
             try {
                 const res = await axios.post(
-                "http://127.0.0.1:5000/upload",
+                "http://127.0.0.1:5001/upload",
                 formData,
                 {
                     headers: {

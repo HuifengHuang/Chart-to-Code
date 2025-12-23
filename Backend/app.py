@@ -3,7 +3,7 @@ from flask_cors import CORS
 import os
 import base64
 import json
-from test import request_API
+from tuzi_test import request_API
 
 app = Flask(__name__)
 CORS(app)
@@ -63,7 +63,7 @@ def upload():
 
     response = request_API(model_name, language, image_to_base64(image))
     res_json = response.json()
-    print(res_json)
+    # print(res_json)
     content = res_json["choices"][0]["message"]["content"]
     print(content)
     data = match_code(content)
