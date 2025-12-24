@@ -19,7 +19,28 @@ def image_to_base64(path):
 
 
 def request_API(model, language, image):
-    prompt = "请根据这张图片，生成一份html代码，要求使用" + language +"绘图，代码按以下格式生成：{\"import_script\":,\"body\":,\"css\":,\"script\":}，注意所有的value使用字符串表示，回复仅给出代码即可"
+    prompt = '请根据这张图片，生成一份html代码，要求使用' + language + '绘图，代码按以下格式生成：\
+        {"import_script":,"body":,"css":,"data":,"script_render":}，\
+        要求将值直接导入下面的html文件可以直接运行。\
+        <!doctype html>\
+        <html>\
+        <head>\
+        <meta charset=\'utf-8\'>\
+        ${import_script}\
+        <style>${css}</style>\
+        </head>\
+        <body>\
+        ${body}\
+        <script>\
+        const dataset = ${data}\
+        ${script_render}\
+        </script>\
+        </body>\
+        </html>\
+        注意:1、所有的value(包括data，即使是纯JSON格式)使用字符串表示!\
+            2、回复仅给出代码即可!\
+            3、请尽量换行(包括data)显示代码内容，方便阅读!'
+    
     data = {
         'model': model,
         'messages': [

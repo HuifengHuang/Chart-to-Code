@@ -11,7 +11,7 @@
                 <ImageDisplayer style="width: 100%;" :Codes="codeToRun"/>
             </div>
             <div class="code child_block">
-                <CodeArea @code-run="handle_run" :Codes="codeToRun"/>
+                <CodeArea @code-run="handle_run" :Codes="obj_code"/>
             </div>
         </div>
     </div>
@@ -33,6 +33,7 @@ export default {
     data() {
         return {
             codeToRun: '',
+            obj_code: null,
         }
     },
     methods: {
@@ -42,7 +43,8 @@ export default {
         },
         handle_request_code(code) {
             console.log("handle_request_code收到代码：", code);
-            this.codeToRun = create_chart_html(code.body, code.css, code.script, code.import_script); 
+            this.codeToRun = create_chart_html(code.body, code.css, code.data, code.script_render, code.import_script);
+            this.obj_code = code;
         }
     }
 }
@@ -72,9 +74,9 @@ div {
     flex-direction: column;
 }
 .display {
-    width: 50%;
+    width: 40%;
 }
 .code {
-    width: 30%;
+    width: 40%;
 }
 </style>

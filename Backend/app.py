@@ -39,7 +39,7 @@ def match_code(content):
     if not match:
         raise ValueError("未找到目标结构")
 
-    block = '{' + match.group(1) + '}'
+    block = match.group(0)
     # print(block)
     data = json.loads(block)
 
@@ -74,10 +74,17 @@ def upload():
     })
 
 
-@app.route("/test", methods=["GET"])
+@app.route("/test", methods=["POST"])
 def test():
-    x = 1
-    return {"msg": "ok"}
+    return jsonify({
+        "msg": "success",
+        "result":{
+  "import_script": "<script src='https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js'></script>",
+  "body": "<div id='chart-container' style='width: 600px;height:400px;'></div>",
+  "css": "#chart-container { margin: 30px auto; box-shadow: 0 0 10px #ccc; }",
+  "data": "{\n  \"categories\": [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\", \"Sun\"],\n  \"values\": [120, 200, 150, 80, 70, 110, 130]\n}",
+  "script_render": "const chart = echarts.init(document.getElementById('chart-container'));\nconst option = {\n  title: {\n    text: 'Weekly Sales Data',\n    left: 'center'\n  },\n  tooltip: {},\n  legend: {\n    data: ['Sales'],\n    bottom: 0\n  },\n  xAxis: {\n    data: dataset.categories\n  },\n  yAxis: {},\n  series: [{\n    name: 'Sales',\n    type: 'bar',\n    data: dataset.values,\n    itemStyle: {\n      color: '#5470C6'\n    }\n  }]\n};\nchart.setOption(option);\nwindow.addEventListener('resize', function() {\n  chart.resize();\n});"
+}})
 
 
 if __name__ == "__main__":

@@ -461,7 +461,8 @@ export function default_js_code(){
     `
 }
 
-export function create_chart_html(html, css, js, import_script){
+export function create_chart_html(html, css, data, script_render, import_script){
+    const Data = (typeof(data) === "string") ? data : JSON.stringify(data);
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -476,7 +477,8 @@ export function create_chart_html(html, css, js, import_script){
     <body>
         ${html}
         <script>
-            ${js}   
+            const dataset = ${Data}
+            ${script_render}
         </script>
     </body>
     </html>`

@@ -62,6 +62,7 @@ export default {
             Model_options:[
                 {value:"deepseek-v3", label:"deepseek-v3"},
                 {value:"gemini-3-flash-preview", label:"gemini-3-flash"},
+                {value:"gpt-4.1-mini", label:"gpt-4"},
             ],
             Language_options:[
                 {value:"D3.js", label:"D3.js"},
