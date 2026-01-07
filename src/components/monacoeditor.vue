@@ -66,10 +66,10 @@ export default {
     },
 
     /** 重置当前内容 */
-    setAllCode(code) {
+    setAllCode(code, modelIndex) {
       console.log("setAllCode:" + code)
       const models = monaco.editor.getModels();
-      models[0]?.setValue(code);
+      models[modelIndex]?.setValue(code);
     },
 
     /** 获取当前内容 */
@@ -78,9 +78,24 @@ export default {
       return model[0]?.getValue();
     },
 
-    changeLanguage(language) {
-      monaco.editor.setModelLanguage(monaco.editor.getModels()[0], language);
+    changeLanguage(language, modelIndex) {
+      monaco.editor.setModelLanguage(monaco.editor.getModels()[modelIndex], language);
     },
+
+    highlightLines(start, end) {
+      highlightDecorations = monaco.editor.deltaDecorations(
+        highlightDecorations,
+        [
+          {
+            range: new monaco.Range(start, 1, end, 1),
+            options: {
+              isWholeLine: true,
+              className: 'my-highlight-line'
+            }
+          }
+        ]
+      );
+    }
   },
 };
 </script>
@@ -88,5 +103,9 @@ export default {
 <style scoped>
 .monaco-editor {
   border: 1px solid #ddd;
+}
+
+.my-highlight-line {
+  background: rgba(255, 230, 150, 0.6);
 }
 </style>

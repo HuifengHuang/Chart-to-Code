@@ -15,15 +15,25 @@
             </div>
             <div class="display child_block">
                 <div class="module" style="height: 70%; flex-direction: column;">
-                    <ImageDisplayer style="width: 100%;height: 100%;" :Codes="codeToRun"/>
+                    <ImageDisplayer style="width: 100%;height: 100%;flex-direction: column;" :Codes="codeToRun"/>
                 </div>
-                <div class="module" style="height: 30%; flex-direction: column;">
-                    <!-- <ImageDisplayer style="width: 100%;height: 100%;" :Codes="codeToRuns"/> -->
+                <div class="module" style="height: 30%;">
+                    <Thumbnails />
                 </div>
             </div>
             <div class="code child_block">
                 <div class="module" style="height: 100%; width: 100%; flex-direction: column;">
-                    <CodeArea @code-run="handle_run" :Codes="obj_code" style=""/>
+                    <div class="child_title">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>设计面板</span>
+                            <el-radio-group v-model="mode" size="small" fill="#409eff">
+                                <el-radio-button label="Code" value="Code" />
+                                <el-radio-button label="Design" value="Design" />
+                            </el-radio-group>
+                        </div>
+                        <div style="height: 10px;"></div>
+                    </div>
+                    <CodeArea v-if="mode==='Code'" @code-run="handle_run" :Codes="obj_code" style=""/>
                 </div>
             </div>
         </div>
@@ -35,6 +45,7 @@ import Selector from '../components/Selector.vue';
 import ImageDisplayer from '../components/ImageDisplayer.vue';
 import Talking from '../components/Talking.vue';
 import CodeArea from '../components/CodeArea.vue';
+import Thumbnails from '../components/Thumbnails.vue';
 import { create_chart_html } from '../common/common';
 
 export default {
@@ -43,12 +54,14 @@ export default {
         Selector,
         ImageDisplayer,
         CodeArea,
-        Talking
+        Talking,
+        Thumbnails
     },
     data() {
         return {
             codeToRun: '',
             obj_code: null,
+            mode: 'Code',
         }
     },
     methods: {
@@ -77,7 +90,7 @@ div {
     overflow: hidden;
 }
 .title{
-    height: 4%; 
+    height: 5%; 
     width: 100%; 
     align-items: center; 
     padding-left: 1%;
@@ -86,7 +99,7 @@ div {
     color: #FFF;
 }
 .main {
-    height: 96%; 
+    height: 95%; 
     width: auto;
 }
 .child_block {
@@ -110,6 +123,11 @@ div {
     border-width: 0.5px;
     border-radius: 3px;
     box-shadow: 1px 2px 3px 1px #bdbaba;
-    margin: 0.5vw;
+    margin: 0.5vh 0.3vw;
+}
+.child_title{
+    margin: 2%;
+    border-bottom: 1px solid gray;
+    flex-direction: column;
 }
 </style>

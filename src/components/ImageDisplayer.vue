@@ -1,5 +1,9 @@
 <template>
-    <iframe ref="preview" sandbox="allow-scripts allow-same-origin"></iframe>
+    <div class="title">
+        <span>渲染结果</span>
+        <div style="height: 10px;"></div>
+    </div>
+    <iframe ref="preview" sandbox="allow-scripts allow-same-origin" style="flex-grow: 1;"></iframe>
 </template>
 
 <script>
@@ -55,3 +59,11 @@ ${this.htmlCode}
   }
 };
 </script>
+
+<style scoped>
+.title{
+  margin: 1%;
+  border-bottom: 1px solid gray;
+  flex-direction: column;
+}
+</style>

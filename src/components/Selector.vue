@@ -62,11 +62,6 @@ export default {
                 {value:"gemini-3-flash-preview", label:"gemini-3-flash"},
                 {value:"gpt-4.1-mini", label:"gpt-4"},
             ],
-            Language_options:[
-                {value:"D3.js", label:"D3.js"},
-                {value:"eChart", label:"eChart"},
-                {value:"Vega", label:"Vega"}
-            ]
         }
     },
     methods: {
@@ -78,9 +73,9 @@ export default {
             this.previewUrl = URL.createObjectURL(file);
         },
         async request_code(){
-            if(!this.selectedModel || !this.selectedLanguage || !this.imageFile){
+            if(!this.selectedModel || !this.imageFile){
                 ElMessage({
-                    message: '请选择图片、模型以及绘图工具',
+                    message: '请选择图片、模型后再请求代码！',
                     type: 'warning',
                 });
                 return;
@@ -88,7 +83,7 @@ export default {
             const formData = new FormData();
             formData.append("image", this.imageFile);
             formData.append("model_name", this.selectedModel);
-            formData.append("language", this.selectedLanguage);
+            formData.append("language", 'D3.js');
             try {
                 const res = await axios.post(
                 "http://127.0.0.1:5001/upload",

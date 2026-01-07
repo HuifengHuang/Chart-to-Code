@@ -1,22 +1,42 @@
 <template>
     <div class="code-area">
-    <el-menu
-        :default-active="activeIndex"
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-    >
-        <el-menu-item index="1">源数据</el-menu-item>
-        <el-menu-item index="2">渲染代码</el-menu-item>
-        <el-menu-item index="3">整体代码</el-menu-item>
-    </el-menu>
-        <monaco
-        ref="monaco"
-        :height="98"
-        :width="100"
-        :opts="opts"
-        :newCode="newCode"
-        ></monaco>
+        <!-- <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+        >
+            <el-menu-item index="1">源数据</el-menu-item>
+            <el-menu-item index="2">渲染代码</el-menu-item>
+            <el-menu-item index="3">整体代码</el-menu-item>
+        </el-menu> -->
+        <div class="title-line" style="margin: 10px 0 5px 0;">
+            <span>源数据</span>
+        </div>
+        <div style="height: 41%;width: 100%;">
+            <monaco
+                ref="monaco_source"
+                :height="100"
+                :width="100"
+                :opts="opt_source"
+                :newCode="newCode"
+            ></monaco>
+        </div>
+
+        <div class="title-line" style="margin: 20px 0 5px 0;">
+            <span>渲染代码</span>
+        </div>
+
+        <div style="height: 41%;width: 100%;">
+            <monaco
+                ref="monaco_render"
+                :height="100"
+                :width="100"
+                :opts="opt_render"
+                :newCode="newCode"
+            ></monaco>
+        </div>
+
         <button @click="runCode" class="run-button">Run</button>
     </div>
 </template>
@@ -38,8 +58,16 @@ export default {
         return {
             activeIndex: '1',
             code: this.Codes,
-            opts: {
+            opt_source: {
                 value: `console.log("aaa")`,
+                readOnly: false,
+                language: "html",
+                theme: "vs",
+                autoIndent: true, // 自动缩进
+                fontSize: 15,
+            },
+            opt_render: {
+                value: `console.log("bbb")`,
                 readOnly: false,
                 language: "html",
                 theme: "vs",
@@ -85,8 +113,12 @@ export default {
     watch:{
         Codes(newCode) {
             this.code = newCode;
-            this.handleSelect('1');
+            // this.handleSelect('1');
             console.log("CodeArea收到代码：", newCode);
+            this.$refs.monaco_source.changeLanguage('json', 0);
+            this.$refs.monaco_source.setAllCode(this.code.data, 0);
+            this.$refs.monaco_render.changeLanguage('javascript', 1);
+            this.$refs.monaco_render.setAllCode(this.code.script_render, 1);
         }
     }
 }
@@ -111,6 +143,7 @@ export default {
     background-color: #033d8b;
 }
 .code-area {
+    /* padding: 2%; */
     width: 100%;
     height: 100%;
     display: flex;
@@ -125,5 +158,25 @@ export default {
 }
 :deep(.el-tabs__header){
   margin-bottom: 0 !important;
+}
+
+.title-line {
+  display: flex;
+  align-items: center;
+  width: 94%;
+  padding: 0 3%;
+}
+
+.title-line::before,
+.title-line::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #000;
+}
+
+.title-line span {
+  margin: 0 12px;
+  font-weight: bold;
 }
 </style>

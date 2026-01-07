@@ -22,7 +22,7 @@
             </div>
         </div>
         <div style="justify-content: space-between; margin-top: 10px;">
-            <el-input v-model="inputText" style="width: 320px" placeholder="Please input" 
+            <el-input v-model="inputText" style="width: 300px" placeholder="Please input" 
                  type="textarea" :autosize="{ minRows: 1, maxRows: 1 }"/>
             <div style="width: 30px;margin-left: 15px;"> 
                 <transition name="fade">
@@ -133,6 +133,7 @@ div{
 .sentence_right{
     width: 100%;
     justify-content: flex-end;
+    padding: 3%;
 }
 .sentence_text{
     padding: 5px;
