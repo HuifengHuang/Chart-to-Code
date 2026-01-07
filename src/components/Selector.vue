@@ -1,25 +1,12 @@
 <template>
-    <div class="image-uploader">
-        <div class="upload-area">
-            <input
-                type="file"
-                accept="image/*"
-                @change="handleImageUpload"
-                ref="fileInput"
-                style="display: none"
-            />
-            <button @click="$refs.fileInput.click()" class="upload-btn">
-                选择图片
-            </button>
-        </div>
-
-        <div v-if="previewUrl" class="image-display">
-            <img :src="previewUrl" alt="Uploaded image" class="preview-image" />
-        </div>
+    <div class="title">
+        <span>数据输入</span>
+        <div style="height: 10px;"></div>
     </div>
+
     <div class="model-selector">
-        <p style="margin: 5px;">生成模型:</p>
-        <el-select v-model="selectedModel" placeholder="模型选择" style="width: 240px">
+        <p style="margin: 20px;">生成模型:</p>
+        <el-select v-model="selectedModel" placeholder="模型选择" style="width: 220px">
             <el-option
             v-for="item in Model_options"
             :key="item.value"
@@ -28,23 +15,34 @@
             />
         </el-select>
     </div>
-    <div class="languege-selector">
-        <p style="margin: 5px;">绘图工具:</p>
-        <el-select v-model="selectedLanguage" placeholder="语言选择" style="width: 240px">
-            <el-option
-            v-for="item in Language_options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-            />
-        </el-select>
+    <div class="image-selector">
+        <p style="margin: 5px;">选择图片:</p>
+        <div class="image-uploader">
+            <div>
+                <input
+                    type="file"
+                    accept="image/*"
+                    @change="handleImageUpload"
+                    ref="fileInput"
+                    style="display: none"
+                />
+                <button @click="$refs.fileInput.click()" class="upload-btn">
+                    上传图片
+                </button>
+            </div>
+
+        </div>
+        <div style="display: flex;justify-content: center;">
+            <button class="upload-btn" style="width: 100px;" @click="request_code()">
+                请求代码
+            </button>
+        </div>
     </div>
 
-    <div style="display: flex;justify-content: center;">
-        <button class="upload-btn" style="width: 100px;" @click="request_code()">
-            请求代码
-        </button>
+    <div v-if="previewUrl" class="image-display">
+        <img :src="previewUrl" alt="Uploaded image" class="preview-image" />
     </div>
+
 
 </template>
 
@@ -133,9 +131,10 @@ export default {
 }
 
 .preview-image {
-    max-width: 300px;
-    margin-top: 20px;
+    width: 100%;
+    height: 100%;
     border-radius: 4px;
+    object-fit: contain;
 }
 
 .clear-btn {
@@ -154,15 +153,27 @@ export default {
 
 .model-selector{
     display: flex;
-    height: 100px;
+    height: 50px;
     justify-content: center;
     align-items: center;
 }
 
-.languege-selector{
+.image-selector{
     display: flex;
-    height: 100px;
+    height: 50px;
     justify-content: center;
     align-items: center;
+}
+
+.title{
+    margin: 3%;
+    border-bottom: 1px solid gray;
+}
+.image-display{
+    width: 100%;
+    height: 55%;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
 }
 </style>

@@ -2,7 +2,7 @@ import os
 import requests
 import json
 import base64
-OPENAI_API_KEY = ''
+OPENAI_API_KEY = 'sk-NAux5UqLZ76R945JGZZdlmIIbNKx3gmygn6xnmITeR9ej6mA'
 if not OPENAI_API_KEY:
     raise RuntimeError("Please set the OPENAI_API_KEY environment variable before running this script.")
 
