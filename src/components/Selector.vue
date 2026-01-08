@@ -49,6 +49,7 @@
 <script>
 import axios from "axios";
 import { ElMessage } from 'element-plus'
+import { test_codes } from '../common/test'
 export default {
     name: 'Selector',
     data() {
@@ -83,7 +84,6 @@ export default {
             const formData = new FormData();
             formData.append("image", this.imageFile);
             formData.append("model_name", this.selectedModel);
-            formData.append("language", 'D3.js');
             try {
                 const res = await axios.post(
                 "http://127.0.0.1:5001/upload",
@@ -99,7 +99,11 @@ export default {
             } catch (err) {
                 console.error("上传失败：", err);
             }
-        }
+        },
+        // request_code(){     // 仅供测试使用
+        //     console.log("后端返回：", test_codes());
+        //     this.$emit('request-code', test_codes());
+        // }
     }
 }
 </script>

@@ -18,7 +18,7 @@
                     <ImageDisplayer style="width: 100%;height: 100%;flex-direction: column;" :Codes="codeToRun"/>
                 </div>
                 <div class="module" style="height: 30%;">
-                    <Thumbnails />
+                    <Thumbnails @select-language="handle_select"/>
                 </div>
             </div>
             <div class="code child_block">
@@ -33,7 +33,7 @@
                         </div>
                         <div style="height: 10px;"></div>
                     </div>
-                    <CodeArea v-if="mode==='Code'" @code-run="handle_run" :Codes="obj_code" style=""/>
+                    <CodeArea v-show="mode==='Code'" @code-run="handle_run" :Codes="obj_code" style=""/>
                 </div>
             </div>
         </div>
@@ -59,7 +59,10 @@ export default {
     },
     data() {
         return {
-            codeToRun: '',
+            D3js_code: null,
+            ECharts_code: null,
+            Vega_code: null,
+            codeToRun: null,
             obj_code: null,
             mode: 'Code',
         }
@@ -71,18 +74,34 @@ export default {
         },
         handle_request_code(code) {
             console.log("handle_request_code收到代码：", code);
-            this.codeToRun = create_chart_html(code.body, code.css, code.data, code.script_render, code.import_script);
-            this.obj_code = code;
-        }
+            console.log("code.D3js：", code.D3js);
+            this.D3js_code = code.D3js;
+            this.ECharts_code = code.ECharts;
+            this.Vega_code = code.Vega;
+            // 默认为D3.js
+            this.codeToRun = create_chart_html(this.D3js_code.body, this.D3js_code.css, this.D3js_code.data, this.D3js_code.script_render, this.D3js_code.import_script);
+            this.obj_code = this.D3js_code;
+        },
+        handle_select(language){
+            let selected_code = null;
+            if(language==='D3js')selected_code = this.D3js_code;
+            else if(language==='ECharts')selected_code = this.ECharts_code;
+            else if(language==='Vega')selected_code = this.Vega_code;
+            this.codeToRun = create_chart_html(selected_code.body, selected_code.css, selected_code.data, selected_code.script_render, selected_code.import_script);
+            this.obj_code = selected_code;
+        },
     }
 }
 </script>
 
 <style scoped>
-
-div {
+.container,
+.main,
+.child_block,
+.module {
     display: flex;
 }
+
 .container {
     height: 100vh;
     width: 100vw;
@@ -113,9 +132,11 @@ div {
 .display {
     flex-grow: 1;
     flex-direction: column;
+    min-width: 0;
 }
 .code {
-    width: 30%;
+    width: 35%;
+    min-width: 0;
 }
 .module{
     border-style: solid;

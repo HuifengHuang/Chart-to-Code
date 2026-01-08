@@ -53,7 +53,6 @@ def match_code(content):
 def upload():
     # 1. 接收文本参数
     model_name = request.form.get("model_name")
-    language = request.form.get("language")
 
     # 2. 接收图片
     if "image" not in request.files:
@@ -61,7 +60,7 @@ def upload():
 
     image = request.files["image"]
 
-    response = request_API(model_name, language, image_to_base64(image))
+    response = request_API(model_name, image_to_base64(image))
     res_json = response.json()
     # print(res_json)
     content = res_json["choices"][0]["message"]["content"]

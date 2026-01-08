@@ -18,10 +18,14 @@ def image_to_base64(path):
         return base64.b64encode(f.read()).decode("utf-8")
 
 
-def request_API(model, language, image):
-    prompt = '请根据这张图片，生成一份html代码，要求使用' + language + '绘图，代码按以下格式生成：\
-        {"import_script":,"body":,"css":,"data":,"script_render":}，\
-        要求将值直接导入下面的html文件可以直接运行。\
+def request_API(model, image):
+    prompt = '请根据这张图片，生成三份html代码，要求分别使用D3.js,ECharts,Vega绘图，代码按以下格式生成：\
+        {\
+            "D3js": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
+            "ECharts": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
+            "Vega": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
+        }\
+        要求每份代码的值直接导入下面的html文件可以直接运行。\
         <!doctype html>\
         <html>\
         <head>\
@@ -61,11 +65,11 @@ def request_API(model, language, image):
         headers=headers,
         data=json.dumps(data),
         stream=True,
-        timeout=30
+        timeout=180
     )
     return response
 
 
 if __name__ == "__main__":
-    resp = request_API("deepseek-v3", "D3.js", image_to_base64('E:/kangziyao/CodingSapce/Chart-to-Code/Backend/barchartimage.png'))
+    resp = request_API("gemini-3-flash-preview", image_to_base64('E:/kangziyao/CodingSapce/Chart-to-Code/Backend/bar_image.png'))
     print(resp.text)

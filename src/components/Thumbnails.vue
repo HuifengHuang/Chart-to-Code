@@ -1,14 +1,14 @@
 <template>
     <div class="thumbnail_container">
-        <div class="block">
+        <div class="block" @click="handle_click('D3js')">
             <span>D3.js</span>
             <img :src="d3js_logo" class="_img"/>
         </div>
-        <div class="block">
+        <div class="block" @click="handle_click('ECharts')">
             <span>ECharts</span>
             <img :src="echart_logo" class="_img"/>
         </div>
-        <div class="block">
+        <div class="block" @click="handle_click('Vega')">
             <span>Vega</span>
             <img :src="vega_logo" class="_img"/>
         </div>
@@ -28,6 +28,11 @@ export default {
             vega_logo: vega_img,
         }
     },
+    methods:{
+        handle_click(language){
+            this.$emit('select-language', language);
+        }
+    }
 }
 </script>
 
@@ -47,6 +52,7 @@ export default {
     margin: 1%;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 ._img {
     width: 100%;
