@@ -13,28 +13,36 @@
         <div class="title-line" style="margin: 10px 0 5px 0;">
             <span>源数据</span>
         </div>
-        <div style="height: 41%;width: 100%;">
+        <div style="height: 41%;width: 100%; position: relative;">
             <monaco
                 ref="monaco_source"
                 :height="100"
-                :width="100"
+                :width="75"
                 :opts="opt_source"
                 :newCode="newCode"
             ></monaco>
+            <div v-if="editorLoading.isLoading" class="loading-mask">
+                <div class="spinner"></div>
+                <p class="text">Loading...</p>
+            </div>
         </div>
 
         <div class="title-line" style="margin: 20px 0 5px 0;">
             <span>渲染代码</span>
         </div>
 
-        <div style="height: 41%;width: 100%;">
+        <div style="height: 41%;width: 100%; position: relative;">
             <monaco
                 ref="monaco_render"
                 :height="100"
-                :width="100"
+                :width="75"
                 :opts="opt_render"
                 :newCode="newCode"
             ></monaco>
+            <div v-if="editorLoading.isLoading" class="loading-mask">
+                <div class="spinner"></div>
+                <p class="text">Loading...</p>
+            </div>
         </div>
 
         <button @click="runCode" class="run-button">Run</button>
@@ -44,6 +52,7 @@
 <script>
 import monaco from "../components/monacoeditor.vue";
 import { create_chart_html } from '../common/common';
+import { editorLoading } from "../global/editorLoading";
 export default {
     name: 'CodeArea',
     components: {monaco},
@@ -64,7 +73,7 @@ export default {
                 language: "html",
                 theme: "vs",
                 autoIndent: true, // 自动缩进
-                fontSize: 15,
+                fontSize: 13,
             },
             opt_render: {
                 value: `console.log("bbb")`,
@@ -72,24 +81,18 @@ export default {
                 language: "html",
                 theme: "vs",
                 autoIndent: true, // 自动缩进
-                fontSize: 15,
+                fontSize: 13,
             },
             newCode: '',
+            isLoading: true,
+            editorLoading,
         }
     },
     methods: {
         runCode() {
             // Emit the code to parent component or handle it as needed
             var Overall_code='';
-            if(this.activeIndex==='1'){
-                Overall_code = create_chart_html(this.code.body, this.code.css, this.$refs.monaco.getValue(), this.code.script_render, this.code.import_script);
-            }
-            else if(this.activeIndex==='2'){
-                Overall_code = create_chart_html(this.code.body, this.code.css, this.code.data, this.$refs.monaco.getValue(), this.code.import_script);
-            }
-            else if(this.activeIndex==='3'){
-                Overall_code = this.$refs.monaco.getValue();
-            }
+            Overall_code = create_chart_html(this.code.body, this.code.css, this.$refs.monaco_source.getValue(0), this.$refs.monaco_render.getValue(1), this.code.import_script);
             this.$emit('code-run', Overall_code);
         },
         handleSelect(index){
@@ -179,4 +182,5 @@ export default {
   margin: 0 12px;
   font-weight: bold;
 }
+
 </style>

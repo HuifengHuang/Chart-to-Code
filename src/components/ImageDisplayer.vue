@@ -3,11 +3,19 @@
         <span>渲染结果</span>
         <div style="height: 10px;"></div>
     </div>
-    <iframe ref="preview" sandbox="allow-scripts allow-same-origin" style="flex-grow: 1;"></iframe>
+    <div style="flex-grow: 1; position: relative;">
+      <iframe ref="preview" sandbox="allow-scripts allow-same-origin" style="width: 100%;height: 100%;"></iframe>
+      <div v-if="editorLoading.isLoading" class="loading-mask">
+          <div class="spinner"></div>
+          <p class="text">Loading...</p>
+      </div>
+    </div>
+    
 </template>
 
 <script>
 import { default_html_code,default_css_code,default_js_code } from '../common/common';
+import { editorLoading } from "../global/editorLoading";
 export default {
   name: "StaticCodePreview",
   props: {
@@ -19,10 +27,14 @@ export default {
   },
   data() {
     return {
-      htmlCode: default_html_code(),
-      cssCode: default_css_code(),
-      jsCode: default_js_code(),
+      // htmlCode: default_html_code(),
+      // cssCode: default_css_code(),
+      // jsCode: default_js_code(),
+      htmlCode: '',
+      cssCode: '',
+      jsCode: '',
       input_code:'',
+      editorLoading,
     };
   },
   mounted() {

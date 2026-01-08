@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="code child_block">
-                <div class="module" style="height: 100%; width: 100%; flex-direction: column;">
+                <div class="module" style="height: 100%; width: 97%; flex-direction: column;">
                     <div class="child_title">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span>设计面板</span>
@@ -33,7 +33,7 @@
                         </div>
                         <div style="height: 10px;"></div>
                     </div>
-                    <CodeArea v-show="mode==='Code'" @code-run="handle_run" :Codes="obj_code" style=""/>
+                    <CodeArea v-show="mode==='Code'" @code-run="handle_run" :Codes="obj_code" style="width: 100%;"/>
                 </div>
             </div>
         </div>
@@ -98,7 +98,8 @@ export default {
 .container,
 .main,
 .child_block,
-.module {
+.module,
+.title {
     display: flex;
 }
 
@@ -126,8 +127,9 @@ export default {
     height: 100%;
 }
 .selector {
-    width: 20%;
+    width: 25%;
     flex-direction: column;
+    min-width: 0;
 }
 .display {
     flex-grow: 1;
@@ -135,7 +137,8 @@ export default {
     min-width: 0;
 }
 .code {
-    width: 35%;
+    width: 40%;
+    flex-direction: column;
     min-width: 0;
 }
 .module{

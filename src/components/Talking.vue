@@ -22,7 +22,7 @@
             </div>
         </div>
         <div style="justify-content: space-between; margin-top: 10px;">
-            <el-input v-model="inputText" style="width: 300px" placeholder="Please input" 
+            <el-input v-model="inputText" style="width: 250px" placeholder="Please input" 
                  type="textarea" :autosize="{ minRows: 1, maxRows: 1 }"/>
             <div style="width: 30px;margin-left: 15px;"> 
                 <transition name="fade">
@@ -139,6 +139,7 @@ div{
     padding: 5px;
     width: 75%;
     background-color: #f5f7fa;
+    border-radius: 5px;
 }
 ._img{
     height: 40px;

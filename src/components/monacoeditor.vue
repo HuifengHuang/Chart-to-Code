@@ -73,9 +73,9 @@ export default {
     },
 
     /** 获取当前内容 */
-    getValue() {
+    getValue(modelIndex) {
       const model = monaco.editor.getModels();
-      return model[0]?.getValue();
+      return model[modelIndex]?.getValue();
     },
 
     changeLanguage(language, modelIndex) {

@@ -16,7 +16,7 @@
         </el-select>
     </div>
     <div class="image-selector">
-        <p style="margin: 5px;">选择图片:</p>
+        <p style="margin: 10px 10px 10px 20px">选择图片:</p>
         <div class="image-uploader">
             <div>
                 <input
@@ -26,16 +26,16 @@
                     ref="fileInput"
                     style="display: none"
                 />
-                <button @click="$refs.fileInput.click()" class="upload-btn">
+                <el-button @click="$refs.fileInput.click()" class="upload-btn" type="primary">
                     上传图片
-                </button>
+                </el-button>
             </div>
 
         </div>
         <div style="display: flex;justify-content: center;">
-            <button class="upload-btn" style="width: 100px;" @click="request_code()">
+            <el-button type="primary" class="upload-btn" @click="request_code()">
                 请求代码
-            </button>
+            </el-button>
         </div>
     </div>
 
@@ -50,6 +50,7 @@
 import axios from "axios";
 import { ElMessage } from 'element-plus'
 import { test_codes } from '../common/test'
+import { editorLoading } from "../global/editorLoading";
 export default {
     name: 'Selector',
     data() {
@@ -63,6 +64,7 @@ export default {
                 {value:"gemini-3-flash-preview", label:"gemini-3-flash"},
                 {value:"gpt-4.1-mini", label:"gpt-4"},
             ],
+            editorLoading,
         }
     },
     methods: {
@@ -73,44 +75,46 @@ export default {
             this.imageFile = file;
             this.previewUrl = URL.createObjectURL(file);
         },
-        async request_code(){
-            if(!this.selectedModel || !this.imageFile){
-                ElMessage({
-                    message: '请选择图片、模型后再请求代码！',
-                    type: 'warning',
-                });
-                return;
-            }
-            const formData = new FormData();
-            formData.append("image", this.imageFile);
-            formData.append("model_name", this.selectedModel);
-            try {
-                const res = await axios.post(
-                "http://127.0.0.1:5001/upload",
-                formData,
-                {
-                    headers: {
-                    "Content-Type": "multipart/form-data"
-                    }
-                }
-                );
-                console.log("后端返回：", res.data.result);
-                this.$emit('request-code', res.data.result);
-            } catch (err) {
-                console.error("上传失败：", err);
-            }
-        },
-        // request_code(){     // 仅供测试使用
-        //     console.log("后端返回：", test_codes());
-        //     this.$emit('request-code', test_codes());
-        // }
+        // async request_code(){
+        //     if(!this.selectedModel || !this.imageFile){
+        //         ElMessage({
+        //             message: '请选择图片、模型后再请求代码！',
+        //             type: 'warning',
+        //         });
+        //         return;
+        //     }
+        //     this.editorLoading.isLoading = true;
+        //     const formData = new FormData();
+        //     formData.append("image", this.imageFile);
+        //     formData.append("model_name", this.selectedModel);
+        //     try {
+        //         const res = await axios.post(
+        //         "http://127.0.0.1:5001/upload",
+        //         formData,
+        //         {
+        //             headers: {
+        //             "Content-Type": "multipart/form-data"
+        //             }
+        //         }
+        //         );
+        //         console.log("后端返回：", res.data.result);
+        //         this.editorLoading.isLoading = false;
+        //         this.$emit('request-code', res.data.result);
+        //     } catch (err) {
+        //         console.error("上传失败：", err);
+        //     }
+        // },
+        request_code(){     // 仅供测试使用
+            console.log("后端返回：", test_codes());
+            this.$emit('request-code', test_codes());
+        }
     }
 }
 </script>
 
 <style scoped>
 .image-uploader {
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -118,8 +122,8 @@ export default {
 
 .upload-btn {
     padding: 10px 20px;
-    background-color: #409eff;
-    color: white;
+    /* background-color: #409eff;
+    color: white; */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -153,14 +157,12 @@ export default {
 .model-selector{
     display: flex;
     height: 50px;
-    justify-content: center;
     align-items: center;
 }
 
 .image-selector{
     display: flex;
     height: 50px;
-    justify-content: center;
     align-items: center;
 }
 
