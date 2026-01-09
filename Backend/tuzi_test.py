@@ -43,7 +43,8 @@ def request_API(model, image):
         </html>\
         注意:1、所有的value(包括data，即使是纯JSON格式)使用字符串表示!\
             2、回复仅给出代码即可!\
-            3、请尽量换行(包括data)显示代码内容，方便阅读!'
+            3、请尽量换行(包括data)显示代码内容，方便阅读!\
+            4、要求运行结果能自适应窗口大小'
     
     data = {
         'model': model,

@@ -17,13 +17,13 @@
             <monaco
                 ref="monaco_source"
                 :height="100"
-                :width="75"
+                :width="98"
                 :opts="opt_source"
                 :newCode="newCode"
             ></monaco>
             <div v-if="editorLoading.isLoading" class="loading-mask">
                 <div class="spinner"></div>
-                <p class="text">Loading...</p>
+                <p class="text">加载中...</p>
             </div>
         </div>
 
@@ -35,24 +35,27 @@
             <monaco
                 ref="monaco_render"
                 :height="100"
-                :width="75"
+                :width="98"
                 :opts="opt_render"
                 :newCode="newCode"
             ></monaco>
             <div v-if="editorLoading.isLoading" class="loading-mask">
                 <div class="spinner"></div>
-                <p class="text">Loading...</p>
+                <p class="text">加载中...</p>
             </div>
         </div>
 
-        <button @click="runCode" class="run-button">Run</button>
+        <div class="bottom_block">
+            <el-button @click="runCode" type="primary">运行</el-button>
+        </div>
+
     </div>
 </template>
 
 <script>
 import monaco from "../components/monacoeditor.vue";
 import { create_chart_html } from '../common/common';
-import { editorLoading } from "../global/editorLoading";
+import { editorLoading } from "../global/global";
 export default {
     name: 'CodeArea',
     components: {monaco},
@@ -129,15 +132,11 @@ export default {
 
 <style scoped>
 .run-button {
-    padding: 8px 16px;
-    background-color: #0969da;
-    color: white;
+    padding: 8px 30px;
     border: none;
     border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
-    margin: 10px;
-    transition: background-color 0.2s;
 }
 .run-button:hover {
     background-color: #0860ca;
@@ -183,4 +182,11 @@ export default {
   font-weight: bold;
 }
 
+.bottom_block{
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>

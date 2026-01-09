@@ -18,7 +18,8 @@
                     <ImageDisplayer style="width: 100%;height: 100%;flex-direction: column;" :Codes="codeToRun"/>
                 </div>
                 <div class="module" style="height: 30%;">
-                    <Thumbnails @select-language="handle_select"/>
+                    <Thumbnails @select-language="handle_select" :D3js_code="D3js_code" 
+                        :ECharts_code="ECharts_code" :Vega_code="Vega_code"/>
                 </div>
             </div>
             <div class="code child_block">
@@ -63,6 +64,7 @@ export default {
             ECharts_code: null,
             Vega_code: null,
             codeToRun: null,
+            whole_code: null,
             obj_code: null,
             mode: 'Code',
         }
@@ -74,7 +76,8 @@ export default {
         },
         handle_request_code(code) {
             console.log("handle_request_code收到代码：", code);
-            console.log("code.D3js：", code.D3js);
+            // console.log("code.D3js：", code.D3js);
+            this.whole_code = code;
             this.D3js_code = code.D3js;
             this.ECharts_code = code.ECharts;
             this.Vega_code = code.Vega;
@@ -127,7 +130,7 @@ export default {
     height: 100%;
 }
 .selector {
-    width: 25%;
+    width: 20%;
     flex-direction: column;
     min-width: 0;
 }
@@ -137,7 +140,7 @@ export default {
     min-width: 0;
 }
 .code {
-    width: 40%;
+    width: 30%;
     flex-direction: column;
     min-width: 0;
 }

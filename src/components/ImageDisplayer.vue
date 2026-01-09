@@ -7,7 +7,7 @@
       <iframe ref="preview" sandbox="allow-scripts allow-same-origin" style="width: 100%;height: 100%;"></iframe>
       <div v-if="editorLoading.isLoading" class="loading-mask">
           <div class="spinner"></div>
-          <p class="text">Loading...</p>
+          <p class="text">加载中...</p>
       </div>
     </div>
     
@@ -15,7 +15,7 @@
 
 <script>
 import { default_html_code,default_css_code,default_js_code } from '../common/common';
-import { editorLoading } from "../global/editorLoading";
+import { editorLoading } from "../global/global";
 export default {
   name: "StaticCodePreview",
   props: {
