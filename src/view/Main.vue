@@ -15,7 +15,8 @@
             </div>
             <div class="display child_block">
                 <div class="module" style="height: 70%; flex-direction: column;">
-                    <ImageDisplayer style="width: 100%;height: 100%;flex-direction: column;" :Codes="codeToRun"/>
+                    <ImageDisplayer style="width: 100%;height: 100%;flex-direction: column;" 
+                        :language="language"    :Codes="codeToRun"/>
                 </div>
                 <div class="module" style="height: 30%;">
                     <Thumbnails @select-language="handle_select" :D3js_code="D3js_code" 
@@ -48,6 +49,7 @@ import Talking from '../components/Talking.vue';
 import CodeArea from '../components/CodeArea.vue';
 import Thumbnails from '../components/Thumbnails.vue';
 import { create_chart_html } from '../common/common';
+import { languages } from "../global/global";
 
 export default {
     name: 'Main',
@@ -63,8 +65,9 @@ export default {
             D3js_code: null,
             ECharts_code: null,
             Vega_code: null,
-            codeToRun: null,
+            codeToRun: {},
             whole_code: null,
+            language: '',
             obj_code: null,
             mode: 'Code',
         }
@@ -78,6 +81,9 @@ export default {
             console.log("handle_request_code收到代码：", code);
             // console.log("code.D3js：", code.D3js);
             this.whole_code = code;
+            for(const item of languages.value){
+                
+            }
             this.D3js_code = code.D3js;
             this.ECharts_code = code.ECharts;
             this.Vega_code = code.Vega;
