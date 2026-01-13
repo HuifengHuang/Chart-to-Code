@@ -94,9 +94,10 @@ export default {
     methods: {
         runCode() {
             // Emit the code to parent component or handle it as needed
-            var Overall_code='';
-            Overall_code = create_chart_html(this.code.body, this.code.css, this.$refs.monaco_source.getValue(0), this.$refs.monaco_render.getValue(1), this.code.import_script);
-            this.$emit('code-run', Overall_code);
+            // Overall_code = create_chart_html(this.code.body, this.code.css, this.$refs.monaco_source.getValue(0), this.$refs.monaco_render.getValue(1), this.code.import_script);
+            this.code.data = this.$refs.monaco_source.getValue(0);
+            this.code.script_render = this.$refs.monaco_source.getValue(1);
+            this.$emit('code-run', this.code);
         },
         handleSelect(index){
             if(index==='1'){
@@ -117,15 +118,19 @@ export default {
         }
     },
     watch:{
-        Codes(newCode) {
+        Codes:{
+            handler(newCode){
             this.code = newCode;
             // this.handleSelect('1');
             console.log("CodeArea收到代码：", newCode);
             this.$refs.monaco_source.changeLanguage('json', 0);
-            this.$refs.monaco_source.setAllCode(this.code.data, 0);
+            const data = JSON.parse(this.code.data);
+            this.$refs.monaco_source.setAllCode(JSON.stringify(data, null, 2), 0);
             this.$refs.monaco_render.changeLanguage('javascript', 1);
             this.$refs.monaco_render.setAllCode(this.code.script_render, 1);
-        }
+            },
+        },
+        deep: true
     }
 }
 </script>

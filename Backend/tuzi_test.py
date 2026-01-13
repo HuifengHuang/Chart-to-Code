@@ -22,8 +22,17 @@ def request_API(model, image):
     prompt = '请根据这张图片，生成三份html代码，要求分别使用D3.js,ECharts,Vega绘图，代码按以下格式生成：\
         {\
             "D3js": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
-            "ECharts": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
-            "Vega": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
+            "echarts": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
+            "vega": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
+        }\
+        其中，data属性需要满足以下格式：\
+        {\
+        "id":,\
+        "value":{\
+            "x":,\
+            "y":,\
+            "pie_value":,\
+            }\
         }\
         要求每份代码的值直接导入下面的html文件可以直接运行。\
         <!doctype html>\
@@ -44,7 +53,7 @@ def request_API(model, image):
         注意:1、所有的value(包括data，即使是纯JSON格式)使用字符串表示!\
             2、回复仅给出代码即可!\
             3、请尽量换行(包括data)显示代码内容，方便阅读!\
-            4、要求运行结果能自适应窗口大小'
+            4、要求运行结果能自适应窗口大小，并且body属性中必须加入overflow:hidden;'
     
     data = {
         'model': model,

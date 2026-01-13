@@ -483,3 +483,9 @@ export function create_chart_html(html, css, data, script_render, import_script)
     </body>
     </html>`
 }
+
+export function sleep(ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
+}

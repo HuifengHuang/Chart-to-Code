@@ -37,4 +37,5 @@ html, body {
 
 iframe{
   border: none;
+  overflow:hidden;
 }

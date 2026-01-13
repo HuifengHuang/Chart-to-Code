@@ -1,25 +1,25 @@
 <template>
     <div class="thumbnail_container">
-        <div class="block" @click="handle_click('D3js')" :class="{highlight : current_language === 'D3js'}">
+        <div class="block" @click="handle_click('D3js')" :class="{highlight : language === 'D3js'}">
             <span>D3.js</span>
             <!-- <iframe ref="D3js_iframe" sandbox="allow-scripts allow-same-origin" style="width: 100%;height: 100%;"></iframe> -->
-            <img :src="thumbnail_D3js" style="width: 100%;height: 100%;" />
+            <img :src="iframeDocs.D3js" />
             <div v-if="editorLoading.isLoading" class="loading-mask">
                 <div class="spinner"></div>
                 <p class="text">加载中...</p>
             </div>
         </div>
-        <div class="block" @click="handle_click('ECharts')" :class="{highlight : current_language === 'ECharts'}">
+        <div class="block" @click="handle_click('echarts')" :class="{highlight : language === 'echarts'}">
             <span>ECharts</span>
-            <iframe ref="ECharts_iframe" sandbox="allow-scripts allow-same-origin" style="width: 100%;height: 100%;"></iframe>
+            <img :src="iframeDocs.echarts" />
             <div v-if="editorLoading.isLoading" class="loading-mask">
                 <div class="spinner"></div>
                 <p class="text">加载中...</p>
             </div>
         </div>
-        <div class="block" @click="handle_click('Vega')" :class="{highlight : current_language === 'Vega'}">
+        <div class="block" @click="handle_click('vega')" :class="{highlight : language === 'vega'}">
             <span>Vega</span>
-            <iframe ref="Vega_iframe" sandbox="allow-scripts allow-same-origin" style="width: 100%;height: 100%;"></iframe>
+            <img :src="iframeDocs.vega" />
             <div v-if="editorLoading.isLoading" class="loading-mask">
                 <div class="spinner"></div>
                 <p class="text">加载中...</p>
@@ -32,27 +32,15 @@
 import d3js_img from '../assets/D3jsDemo.png'
 import echart_img from '../assets/EChartsDemo.png'
 import vega_img from '../assets/VegaDemo.png'
-import { editorLoading, iframe_html } from "../global/global";
-import { create_chart_html } from '../common/common';
-import html2canvas from "html2canvas";
+import { editorLoading, iframeDocs } from "../global/global";
 export default {
     name: 'Thumbnails',
     props: {
-        D3js_code: {
+        language:{
             type: String,
-            required: false,
-            default: ''
-        },
-        ECharts_code: {
-            type: String,
-            required: false,
-            default: ''
-        },
-        Vega_code: {
-            type: String,
-            required: false,
-            default: ''
-        },
+            required: true,
+            default: "D3js"
+        }
     },
     data() {
         return {
@@ -60,47 +48,32 @@ export default {
             echart_logo: echart_img,
             vega_logo: vega_img,
             editorLoading,
-            current_language: "D3js",
-            thumbnail_D3js: '',
+            thumbnails: {},
+            iframeDocs,
         }
     },
+
     methods:{
-        handle_click(language){
-            this.$emit('select-language', language);
-            this.current_language = language;
-            this.generateThumbnail();
+        handle_click(lang){
+            this.$emit('select-language', lang);
         },
-        async generateThumbnail() {
-            const iframe = iframe_html.iframe;
-            console.log(iframe);
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-            const canvas = await html2canvas(iframeDoc.body, {
-                scale: 0.5,     // 关键：直接生成缩略图
-                useCORS: true
-            });
-
-            this.thumbnail_D3js = canvas.toDataURL("image/png");
-            // console.log(imgBase64);
-        }
     },
     watch:{
-        D3js_code(newCode){
-            // this.$refs.D3js_iframe.srcdoc = create_chart_html(
-            //     newCode.body, newCode.css, newCode.data, newCode.script_render,newCode.import_script
-            // )
-            this.generateThumbnail();
-        },
-        ECharts_code(newCode){
-            this.$refs.ECharts_iframe.srcdoc = create_chart_html(
-                newCode.body, newCode.css, newCode.data, newCode.script_render,newCode.import_script
-            );
-        },
-        Vega_code(newCode){
-            this.$refs.Vega_iframe.srcdoc = create_chart_html(
-                newCode.body, newCode.css, newCode.data, newCode.script_render,newCode.import_script
-            );
-        },
+        // D3js_code(newCode){
+        //     // this.$refs.D3js_iframe.srcdoc = create_chart_html(
+        //     //     newCode.body, newCode.css, newCode.data, newCode.script_render,newCode.import_script
+        //     // )
+        // },
+        // ECharts_code(newCode){
+        //     this.$refs.ECharts_iframe.srcdoc = create_chart_html(
+        //         newCode.body, newCode.css, newCode.data, newCode.script_render,newCode.import_script
+        //     );
+        // },
+        // Vega_code(newCode){
+        //     this.$refs.Vega_iframe.srcdoc = create_chart_html(
+        //         newCode.body, newCode.css, newCode.data, newCode.script_render,newCode.import_script
+        //     );
+        // },
     }
 }
 </script>
@@ -113,6 +86,7 @@ export default {
     height: 100%;
 }
 .block {
+    width: 30%;
     flex-grow: 1;
     height: auto;
     border: 1px solid gray;
@@ -125,6 +99,11 @@ export default {
     position: relative;
     overflow: hidden;
 }
+.block img{
+    width: 290px;
+    height: 174px;
+}
+
 ._img {
     width: 100%;
     height: 80%;

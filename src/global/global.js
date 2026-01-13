@@ -10,9 +10,10 @@ export const ip_address = reactive({
   port:'5001'
 })
 
-export const iframe_html = reactive({
-  iframe: '',
-  code: '',
+export const iframeDocs = reactive({
+  'D3js': '',
+  'echarts': '',
+  'vega': ''
 })
 
 export const languages = reactive({

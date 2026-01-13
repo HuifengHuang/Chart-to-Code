@@ -4,8 +4,12 @@
         <div style="height: 10px;"></div>
     </div>
     <div style="flex-grow: 1; position: relative;">
-      <iframe v-for="value in languages.value" v-show="value===language" :ref=value 
-          sandbox="allow-scripts allow-same-origin" style="width: 100%;height: 100%;"></iframe>
+      <iframe ref='D3js' sandbox="allow-scripts allow-same-origin" 
+          style="width: 1000px;height: 600px;" :class="{'hidden-capture': language!='D3js'}"></iframe>
+      <iframe ref='echarts' sandbox="allow-scripts allow-same-origin" 
+          style="width: 1000px;height: 600px;" :class="{'hidden-capture': language!='echarts'}"></iframe>
+      <iframe ref='vega' sandbox="allow-scripts allow-same-origin" 
+          style="width: 1000px;height: 600px;" :class="{'hidden-capture': language!='vega'}"></iframe>
       <div v-if="editorLoading.isLoading" class="loading-mask">
           <div class="spinner"></div>
           <p class="text">加载中...</p>
@@ -15,8 +19,10 @@
 </template>
 
 <script>
-import { languages } from "monaco-editor";
-import { editorLoading, iframe_html, languages } from "../global/global";
+import { editorLoading, languages, iframeDocs } from "../global/global";
+import { sleep } from "../common/common"
+import html2canvas from "html2canvas";
+import { tr } from "element-plus/es/locales.mjs";
 export default {
   name: "StaticCodePreview",
   props: {
@@ -59,21 +65,38 @@ ${this.htmlCode}
 <\/html>`;
     },
     runPreview() {
-      this.$refs.preview.srcdoc = this.buildSrcdoc();
-    },
-    runNewview(){
       for(const item of languages.value){
-        this.$refs.item.srcdoc = this.input_code.item;
+        this.$refs[item].srcdoc = this.buildSrcdoc();
       }
+      // this.$refs.preview.srcdoc = this.buildSrcdoc();
+    },
+    async runNewview(){
+      for(const item of languages.value){
+        this.$refs[item].srcdoc = this.input_code[item];
+        this.generateThumbnail(item, this.$refs[item]);
+      }
+    },
+    async generateThumbnail(item, iframe) {
+      await sleep(1000);
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+      const canvas = await html2canvas(iframeDoc.body, {
+          scale: 1,     // 关键：直接生成缩略图
+          useCORS: true
+      });
+      iframeDocs[item] = canvas.toDataURL("image/png");
+      // console.log("item:" + item)
+      // console.log(iframeDocs[item])
     }
   },
   watch: {
-    Codes(newCode) {
-      this.input_code = newCode;
-      // iframe_html.iframe = this.$refs.preview;
-
-      console.log("HTML code updated:", newCode);
-      this.runNewview();
+    Codes: {
+      handler(newCode){
+        this.input_code = newCode;
+        // iframe_html.iframe = this.$refs.preview;
+        console.log("HTML code updated:", newCode);
+        this.runNewview();
+      },
+      deep: true
     }
   }
 };
@@ -85,4 +108,12 @@ ${this.htmlCode}
   border-bottom: 1px solid gray;
   flex-direction: column;
 }
+.hidden-capture {
+  position: fixed;
+  left: -99999px;
+  top: 0;
+  width: 800px;
+  height: 500px;
+}
+
 </style>
