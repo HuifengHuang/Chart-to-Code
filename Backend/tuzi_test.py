@@ -2,11 +2,13 @@ import os
 import requests
 import json
 import base64
-OPENAI_API_KEY = 'sk-NAux5UqLZ76R945JGZZdlmIIbNKx3gmygn6xnmITeR9ej6mA'
+# OPENAI_API_KEY = 'sk-NAux5UqLZ76R945JGZZdlmIIbNKx3gmygn6xnmITeR9ej6mA'    # 兔子 API KEY
+OPENAI_API_KEY = 'sk-tKVGbJzqcaiyjVfp555d1b344f2d4fEb9bEc0224F5Ce16F2'    # 一展 API KEY
 if not OPENAI_API_KEY:
     raise RuntimeError("Please set the OPENAI_API_KEY environment variable before running this script.")
 
-url = "https://api.tu-zi.com/v1/chat/completions"
+# url = "https://api.tu-zi.com/v1/chat/completions"
+url = "https://api.shunyu.tech/v1/chat/completions"
 headers = {
    'Accept': 'application/json',
     'Authorization': f"Bearer {OPENAI_API_KEY}",
@@ -81,5 +83,5 @@ def request_API(model, image):
 
 
 if __name__ == "__main__":
-    resp = request_API("gemini-3-flash-preview", image_to_base64('E:/kangziyao/CodingSapce/Chart-to-Code/Backend/bar_image.png'))
+    resp = request_API("gpt-5-nano", image_to_base64('E:/kangziyao/CodingSapce/Chart-to-Code/Backend/bar_image.png'))
     print(resp.text)

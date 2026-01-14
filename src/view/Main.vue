@@ -29,12 +29,13 @@
                             <span>设计面板</span>
                             <el-radio-group v-model="mode" size="small" fill="#409eff">
                                 <el-radio-button label="Code" value="Code" />
-                                <el-radio-button label="Design" value="Design" />
+                                <el-radio-button label="Graphical" value="Graphical" />
                             </el-radio-group>
                         </div>
                         <div style="height: 10px;"></div>
                     </div>
                     <CodeArea v-show="mode==='Code'" @code-run="handle_run" :Codes="obj_code" style="width: 100%;"/>
+                    <GraphicalArea v-show="mode==='Graphical'" :Source_data="obj_code.data" style="width: 100%;"/>
                 </div>
             </div>
         </div>
@@ -47,6 +48,7 @@ import ImageDisplayer from '../components/ImageDisplayer.vue';
 import Talking from '../components/Talking.vue';
 import CodeArea from '../components/CodeArea.vue';
 import Thumbnails from '../components/Thumbnails.vue';
+import GraphicalArea from '../components/GraphicalArea.vue'
 import { create_chart_html } from '../common/common';
 import { languages } from "../global/global";
 
@@ -57,7 +59,8 @@ export default {
         ImageDisplayer,
         CodeArea,
         Talking,
-        Thumbnails
+        Thumbnails,
+        GraphicalArea
     },
     data() {
         return {
