@@ -6,7 +6,8 @@ export const editorLoading = reactive({
 })
 
 export const ip_address = reactive({
-  ip: '10.35.2.236',
+  // ip: '10.35.2.236',
+  ip: '192.168.1.2',
   port:'5001'
 })
 

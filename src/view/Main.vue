@@ -70,7 +70,7 @@ export default {
             codeToRun: {},
             whole_code: null,
             language: 'D3js',
-            obj_code: '',
+            obj_code: {data: ['1']},
             mode: 'Code',
         }
     },

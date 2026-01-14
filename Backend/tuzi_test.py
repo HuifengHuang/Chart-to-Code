@@ -2,13 +2,13 @@ import os
 import requests
 import json
 import base64
-# OPENAI_API_KEY = 'sk-NAux5UqLZ76R945JGZZdlmIIbNKx3gmygn6xnmITeR9ej6mA'    # 兔子 API KEY
-OPENAI_API_KEY = 'sk-tKVGbJzqcaiyjVfp555d1b344f2d4fEb9bEc0224F5Ce16F2'    # 一展 API KEY
+OPENAI_API_KEY = 'sk-NAux5UqLZ76R945JGZZdlmIIbNKx3gmygn6xnmITeR9ej6mA'    # 兔子 API KEY
+# OPENAI_API_KEY = 'sk-tKVGbJzqcaiyjVfp555d1b344f2d4fEb9bEc0224F5Ce16F2'    # 一展 API KEY
 if not OPENAI_API_KEY:
     raise RuntimeError("Please set the OPENAI_API_KEY environment variable before running this script.")
 
-# url = "https://api.tu-zi.com/v1/chat/completions"
-url = "https://api.shunyu.tech/v1/chat/completions"
+url = "https://api.tu-zi.com/v1/chat/completions"
+# url = "https://api.shunyu.tech/v1/chat/completions"
 headers = {
    'Accept': 'application/json',
     'Authorization': f"Bearer {OPENAI_API_KEY}",
@@ -27,15 +27,23 @@ def request_API(model, image):
             "echarts": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
             "vega": {"import_script":,"body":,"css":,"data":,"script_render":}]，\
         }\
-        其中，data属性需要满足以下格式：\
+        其中，data为一个列表[]，其中每个属性需要满足以下格式：\
         {\
         "id":,\
+        "class":,\
         "value":{\
             "x":,\
             "y":,\
-            "pie_value":,\
+            }\
+        "render":{\
+            "bar-width":,\
+            "point-radius":,\
+            "circle-radius":{"in":,"out":},\
             }\
         }\
+        其中，id必须唯一，class为[bar,point,pie]三个值中的一个，饼图如果只有一个值时，可以设置x值，y值为none。\
+             bar-width指柱状图的柱宽，point-radius指折线图的点半径，circle-radius值in为饼图的内径，out为饼图的外径。\
+             如果某属性不存在，则值设置为none\
         要求每份代码的值直接导入下面的html文件可以直接运行。\
         <!doctype html>\
         <html>\
@@ -83,5 +91,6 @@ def request_API(model, image):
 
 
 if __name__ == "__main__":
-    resp = request_API("gpt-5-nano", image_to_base64('E:/kangziyao/CodingSapce/Chart-to-Code/Backend/bar_image.png'))
+    # resp = request_API("gpt-5-nano", image_to_base64('E:/kangziyao/CodingSapce/Chart-to-Code/Backend/bar_image.png'))
+    resp = request_API("qwen3-vl-plus", image_to_base64('D:/RA工作目录/code workspace/Chart-to-Code/Backend/barchartimage.png'))
     print(resp.text)

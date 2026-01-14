@@ -10,9 +10,9 @@
             <el-menu-item index="2">渲染代码</el-menu-item>
             <el-menu-item index="3">整体代码</el-menu-item>
         </el-menu> -->
-        <div class="title-line" style="margin: 10px 0 5px 0;">
+        <!-- <div class="title-line" style="margin: 10px 0 5px 0;">
             <span>源数据</span>
-        </div>
+        </div> -->
         <div style="height: auto;width: 100%; position: relative;">
             <div class="attr-group">
                 <div class="attr-title" @click="handle_collapse('source-data')">
@@ -22,9 +22,66 @@
                 <el-collapse-transition>
                     <div class="attr-content" v-show="collapse_values['source-data']">
                         <div class="data-list">
-                            <div v-for="group in JSON.parse(Source_data)" class="span_border">
-                                <span v-for="(value, key) in group" style="margin: 0 5px;"
-                                    >{{ key }} : {{ value }}</span>
+                            <div v-for="group in data_keeper" class="span_border" @click="choose_data(group)" :class="{'chosen': source_values.id===group['id']}">
+                                <span style="margin: 0 5px;">id : {{ group['id'] }}</span>
+                                <span style="margin: 0 5px;">class : {{ group['class'] }}</span>
+                                <span style="margin: 0 5px;">x : {{ group['value']['x'] }}</span>
+                                <span style="margin: 0 5px;">y : {{ group['value']['y'] }}</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;display: flex;">
+                            <div class="value-group"><span>id: {{ source_values.id }}</span></div>
+                            <div class="value-group"><span>x:</span><el-input v-model="source_values.x" style="width: 70px;"></el-input></div>
+                            <div class="value-group"><span>y:</span><el-input v-model="source_values.y" style="width: 70px;"></el-input></div>
+                        </div>
+                    </div>
+                </el-collapse-transition>
+            </div>
+            <div class="attr-group">
+                <div class="attr-title" @click="handle_collapse('bar-width')">
+                    <span>Bar Width</span>
+                    <span>></span>
+                </div>
+                <el-collapse-transition>
+                    <div v-show="collapse_values['bar-width']">
+                        <div style="margin-top: 10px;display: flex;">
+                            <div class="value-group">
+                                <span style="margin-left: 10px;">bar-width:</span>
+                                <el-input v-model="render_values.bar_width" style="width: 70px;"></el-input>
+                            </div>
+                        </div>
+                    </div>
+                </el-collapse-transition>
+            </div>
+            <div class="attr-group">
+                <div class="attr-title" @click="handle_collapse('point-radius')">
+                    <span>Point Radius</span>
+                    <span>></span>
+                </div>
+                <el-collapse-transition>
+                    <div v-show="collapse_values['point-radius']">
+                        <div style="margin-top: 10px;display: flex;">
+                            <div class="value-group">
+                                <span style="margin-left: 10px;">point-radius:</span>
+                                <el-input v-model="render_values.point_radius" style="width: 70px;"></el-input>
+                            </div>
+                        </div>
+                    </div>
+                </el-collapse-transition>
+            </div>
+            <div class="attr-group">
+                <div class="attr-title" @click="handle_collapse('circle-radius')">
+                    <span>Circle Radius</span>
+                    <span>></span>
+                </div>
+                <el-collapse-transition>
+                    <div v-show="collapse_values['circle-radius']">
+                        <div style="margin-top: 10px;display: flex;">
+                            <div class="value-group">
+                                <span style="margin-left: 10px;">inner-radius:</span>
+                                <el-input v-model="render_values.circle_radius[0]" style="width: 70px;"></el-input>
+                                <span style="margin-left: 10px;">outer-radius:</span>
+                                <el-input v-model="render_values.circle_radius[1]" style="width: 70px;"></el-input>
                             </div>
                         </div>
                     </div>
@@ -36,9 +93,9 @@
             </div>
         </div>
 
-        <div class="title-line" style="margin: 20px 0 5px 0;">
+        <!-- <div class="title-line" style="margin: 20px 0 5px 0;">
             <span>渲染代码</span>
-        </div>
+        </div> -->
 
         <div style="height: auto;width: 100%; position: relative;">
 
@@ -49,7 +106,7 @@
         </div>
 
         <div class="bottom_block">
-            <el-button @click="runCode" type="primary">保存</el-button>
+            <el-button @click="keepCode" type="primary">保存</el-button>
             <el-button @click="runCode" type="primary">运行</el-button>
         </div>
 
@@ -62,7 +119,7 @@ export default {
     name: 'GraphicalArea',
     props:{
         Source_data: {
-            type: Array,
+            type: String,
             required: false,
             default: ''
         },
@@ -73,13 +130,45 @@ export default {
             editorLoading,
             collapse_values: {
                 "source-data": true,
+                "bar-width": false,
+            },
+            data_keeper: JSON.parse(this.Source_data),
+            source_values: {
+                id: '',
+                x: '',
+                y: '',
+            },
+            render_values: {
+                bar_width: '',
+                point_radius: '',
+                circle_radius: ['',''],
             }
+        }
+    },
+    mounted() {
+        const data = this.data_keeper;
+        if(data.length>0){
+            this.render_values.bar_width = data[0]['render']['bar-width'];
+            this.render_values.point_radius = data[0]['render']['point-radius']; 
+            this.render_values.circle_radius[0] = data[0]['render']['circle-radius']['in']; 
+            this.render_values.circle_radius[1] = data[0]['render']['circle-radius']['out'];  
         }
     },
     methods: {
         handle_collapse(value){
             this.collapse_values[value] = (this.collapse_values[value])?false:true;
-        }
+        },
+        choose_data(group){
+            this.source_values.id = group['id'];
+            this.source_values.x = group['value']['x'];
+            this.source_values.y = group['value']['y'];
+        },
+        keepCode(){
+            this.data_keeper[parseInt(this.source_values.id)]['value'] = {
+                x: this.source_values.x,
+                y: this.source_values.y
+            };
+        },
     }
 
 }
@@ -136,7 +225,7 @@ export default {
 .attr-group{
     display: flex;
     flex-direction: column;
-    margin: 1% 3%;
+    margin: 0 3%;
     background-color: #F8F8F8;
     min-height: 30px;
     border-top: 1px solid rgba(99, 99, 99, 0.3);
@@ -149,6 +238,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 0 2%;
+    border-bottom: 1px solid rgba(99, 99, 99, 0.3);
 }
 .attr-content{
     margin: 0 2% 2% 2%;
@@ -164,7 +254,22 @@ export default {
 }
 .span_border{
     padding-left: 5px;
+    cursor: pointer;
     border-top: 1px solid rgba(99, 99, 99, 0.2);
     border-bottom: 1px solid rgba(99, 99, 99, 0.2);
+}
+.span_border:hover{
+    background-color: rgba(99, 99, 99, 0.8);
+}
+.chosen{
+    background-color: rgba(99, 99, 99, 0.8);
+}
+
+.value-group{
+    display: flex;
+    margin: 5px 5px;
+}
+.value-group el-input{
+    width: 30px;
 }
 </style>
