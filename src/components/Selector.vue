@@ -76,39 +76,39 @@ export default {
             this.imageFile = file;
             this.previewUrl = URL.createObjectURL(file);
         },
-        async request_code(){
-            if(!this.selectedModel || !this.imageFile){
-                ElMessage({
-                    message: '请选择图片、模型后再请求代码！',
-                    type: 'warning',
-                });
-                return;
-            }
-            this.editorLoading.isLoading = true;
-            const formData = new FormData();
-            formData.append("image", this.imageFile);
-            formData.append("model_name", this.selectedModel);
-            try {
-                const res = await axios.post(
-                "http://" + ip_address.ip + ":" + ip_address.port + "/upload",
-                formData,
-                {
-                    headers: {
-                    "Content-Type": "multipart/form-data"
-                    }
-                }
-                );
-                console.log("后端返回：", res.data.result);
-                this.editorLoading.isLoading = false;
-                this.$emit('request-code', res.data.result);
-            } catch (err) {
-                console.error("上传失败：", err);
-            }
-        },
-        // request_code(){     // 仅供测试使用
-        //     console.log("后端返回：", test_codes());
-        //     this.$emit('request-code', test_codes());
-        // }
+        // async request_code(){
+        //     if(!this.selectedModel || !this.imageFile){
+        //         ElMessage({
+        //             message: '请选择图片、模型后再请求代码！',
+        //             type: 'warning',
+        //         });
+        //         return;
+        //     }
+        //     this.editorLoading.isLoading = true;
+        //     const formData = new FormData();
+        //     formData.append("image", this.imageFile);
+        //     formData.append("model_name", this.selectedModel);
+        //     try {
+        //         const res = await axios.post(
+        //         "http://" + ip_address.ip + ":" + ip_address.port + "/upload",
+        //         formData,
+        //         {
+        //             headers: {
+        //             "Content-Type": "multipart/form-data"
+        //             }
+        //         }
+        //         );
+        //         console.log("后端返回：", res.data.result);
+        //         this.editorLoading.isLoading = false;
+        //         this.$emit('request-code', res.data.result);
+        //     } catch (err) {
+        //         console.error("上传失败：", err);
+        //     }
+        // },
+        request_code(){     // 仅供测试使用
+            console.log("后端返回：", test_codes());
+            this.$emit('request-code', test_codes());
+        }
     }
 }
 </script>
